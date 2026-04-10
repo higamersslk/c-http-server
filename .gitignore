@@ -1,2 +1,4 @@
-# local
-/build
+# local specific tools
+.vscode/
+.cache/
+build/
