@@ -46,7 +46,7 @@ void listen_clients(int server_fd) {
         }
         
         if (pid == 0) {
-            read_message(client_fd);
+            handle_client(client_fd);
             close(client_fd);
             exit(0);
         } else {
@@ -56,7 +56,7 @@ void listen_clients(int server_fd) {
 }
 
 
-void read_message(int client_fd) {
+void handle_client(int client_fd) {
     char buffer[BUFFER_LEN] = {0};
     ssize_t bytes = read(client_fd, buffer, sizeof(buffer) - 1);
     if (bytes > 0) buffer[bytes] = '\0';
@@ -66,7 +66,8 @@ void read_message(int client_fd) {
     http_request *http_req = http_parser(buffer);
     if(!http_req) return;
 
-    char *http_res = build_response(http_req);
+    route_response res = handle_routes(http_req);
+    char *http_res = build_response(res);
     printf("response:\n%s\n", http_res);
     send(client_fd, http_res, strlen(http_res), 0);
 

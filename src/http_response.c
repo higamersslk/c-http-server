@@ -1,30 +1,24 @@
-#include <string.h>
 #include <stdio.h>
+#include <string.h>
 
-#include "http_response.h"
+#include "route.h"
 
 
-char *build_response(http_request *req) {
-    char *version = req->version;
-    char *path = req->path;
+char *build_response(route_response res) {
     static char response[1024];
-    char *text = path + 1;
-    
-    if (strcmp(path, "/") == 0) {
-        text = "root";
-    }
+
+    int content_length = strlen(res.body);
 
     snprintf(
         response,
         sizeof(response),
-        "HTTP/1.1 200 OK\r\n"
+        "HTTP/1.1 %i %s\r\n"
         "Content-Type: text/plain\r\n"
-        "Content-Length: %li\r\n"
+        "Content-Length: %i\r\n"
         "\r\n"
         "%s",
-        strlen(text),
-        text
-    ); 
+        res.status_code, res.body, content_length, res.body
+    );
 
     return response;
 }

@@ -8,6 +8,6 @@
 
 bool setup_server(int port, int *server_fd);
 void listen_clients(int server_fd);
-void read_message(int client_fd);
+void handle_client(int client_fd);
 
 #endif
