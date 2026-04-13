@@ -9,7 +9,7 @@
 #include "server.h"
 #include "http_parser.h"
 #include "http_response.h"
-
+#include "route.h"
 
 bool setup_server(int port, int *server_fd) {
     struct sockaddr_in server_addr = {
@@ -66,7 +66,7 @@ void handle_client(int client_fd) {
     http_request *http_req = http_parser(buffer);
     if(!http_req) return;
 
-    route_response res = handle_routes(http_req);
+    handler_response res = handle_routes(http_req);
     char *http_res = build_response(res);
     printf("response:\n%s\n", http_res);
     send(client_fd, http_res, strlen(http_res), 0);

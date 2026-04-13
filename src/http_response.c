@@ -1,10 +1,9 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "route.h"
+#include "http_response.h"
 
-
-char *build_response(route_response res) {
+char *build_response(handler_response res) {
     static char response[1024];
 
     int content_length = strlen(res.body);

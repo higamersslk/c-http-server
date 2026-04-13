@@ -1,9 +1,9 @@
 #ifndef HTTP_RESPONSE
 #define HTTP_RESPONSE
 
-#include "route.h"
+#include "handlers.h"
 
-char *build_response(route_response res);
+char *build_response(handler_response res);
 
 
 #endif
