@@ -1,5 +1,6 @@
 #include <string.h>
 #include "route.h"
+#include "file_handler.h"
 
 
 route routes[] = {
@@ -17,7 +18,7 @@ handler_response handle_routes(http_request *http_req) {
         return routes[i].handler(http_req);
     }
 
-    return (handler_response){404, "Not found"};
+    return file_handler(http_req->path);
 }
 
 

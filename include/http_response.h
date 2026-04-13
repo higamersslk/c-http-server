@@ -3,7 +3,7 @@
 
 #include "handlers.h"
 
-char *build_response(handler_response res);
-
+char *build_header(handler_response res);
+char *build_error_code(int code);
 
 #endif

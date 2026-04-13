@@ -47,7 +47,6 @@ void listen_clients(int server_fd) {
         
         if (pid == 0) {
             handle_client(client_fd);
-            close(client_fd);
             exit(0);
         } else {
             close(client_fd);
@@ -67,9 +66,18 @@ void handle_client(int client_fd) {
     if(!http_req) return;
 
     handler_response res = handle_routes(http_req);
-    char *http_res = build_response(res);
-    printf("response:\n%s\n", http_res);
-    send(client_fd, http_res, strlen(http_res), 0);
+    send_response(client_fd, res);
 
     free(http_req);
+    close(client_fd);
+}
+
+
+void send_response(int client_fd, handler_response response) {
+    char *header = build_header(response);
+    printf("Header: %s\n", header);
+    send(client_fd, header, strlen(header), 0);
+    send(client_fd, response.body, response.content_size, 0);
+
+    free(response.body);
 }
