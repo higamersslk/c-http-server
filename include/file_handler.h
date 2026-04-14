@@ -6,5 +6,7 @@
 
 handler_response file_handler(char *file_path);
 char *load_content(char *file_path, long *size_out);
+char *get_mime_type(char* path);
+int is_directory(char *path);
 
 #endif
