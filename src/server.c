@@ -38,8 +38,6 @@ void listen_clients(int server_fd) {
         
         if (client_fd < 0) continue;
 
-        printf("estabilished connection with client.\n");
-
         int pid = fork();
         if (pid < 0) {
             printf("Failed to create a new process.\n");
@@ -60,14 +58,13 @@ void handle_client(int client_fd) {
     ssize_t bytes = read(client_fd, buffer, sizeof(buffer) - 1);
     if (bytes > 0) buffer[bytes] = '\0';
 
-    printf("%s\n", buffer);
-
     http_request *http_req = http_parser(buffer);
     if(!http_req) return;
 
     handler_response res = handle_routes(http_req);
     send_response(client_fd, res);
 
+    printf("[INFO] %s %s -> %i\n", http_req->method, http_req->path, res.status_code);
     free(http_req);
     close(client_fd);
 }
@@ -75,7 +72,6 @@ void handle_client(int client_fd) {
 
 void send_response(int client_fd, handler_response response) {
     char *header = build_header(response);
-    printf("Header: %s\n", header);
     send(client_fd, header, strlen(header), 0);
     send(client_fd, response.body, response.content_size, 0);
 

@@ -92,8 +92,6 @@ char *load_content(char *file_path, long *size_out) {
 char *get_mime_type(char* path) {
     char *extension = strrchr(path, '.');
 
-    printf("%s\n", extension);
-
     if (!extension) return "application/octet-stream";
 
     if(strcmp(extension, ".html") == 0) return "text/html";

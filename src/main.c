@@ -9,7 +9,7 @@ int main(void) {
 
     int server_fd = -1;
     if(!setup_server(PORT, &server_fd)) {
-        printf("failed to create server.");
+        printf("failed to create server.\n");
         return 1;
     }
 
